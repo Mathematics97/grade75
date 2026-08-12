@@ -1,0 +1,1120 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Rounding Decimals and Significant Figures · Grade 7</title>
+<style>
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; padding: 0; min-height: 100vh;
+    background: #F9F7F4;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    color: #1a1a1a; line-height: 1.55;
+  }
+  .wrap { max-width: 880px; margin: 0 auto; padding: 20px 16px 60px; }
+  .header {
+    background: linear-gradient(135deg, #023D4F 0%, #046380 100%);
+    color: white; border-radius: 14px; padding: 20px 24px;
+    margin-bottom: 20px;
+  }
+  .header .eyebrow {
+    font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase;
+    color: #FFD76B; font-weight: 700; margin-bottom: 6px;
+  }
+  .header h1 {
+    font-family: "Libre Baskerville", Georgia, serif;
+    font-size: 1.6rem; margin: 0 0 4px; font-weight: 700;
+  }
+  .header .sub {
+    font-size: 0.92rem; color: #d0e3eb; margin: 0;
+  }
+
+  /* Email gate */
+  .gate {
+    background: white; border-radius: 14px; padding: 28px 24px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+    border: 1px solid #e8e4dc;
+  }
+  .gate h2 {
+    font-family: "Libre Baskerville", Georgia, serif;
+    margin: 0 0 6px; font-size: 1.3rem; color: #023D4F;
+  }
+  .gate p {
+    margin: 0 0 18px; font-size: 0.92rem; color: #5b5b5b;
+  }
+  .gate label {
+    display: block; font-size: 0.85rem; font-weight: 600;
+    color: #023D4F; margin-bottom: 6px;
+  }
+  .gate input {
+    width: 100%; padding: 11px 14px; font-size: 0.95rem;
+    border: 1.5px solid #d4d0c8; border-radius: 8px;
+    margin-bottom: 14px; font-family: inherit;
+    background: #fafaf7;
+  }
+  .gate input:focus {
+    outline: none; border-color: #046380;
+    background: white;
+  }
+  .gate button {
+    width: 100%; padding: 13px; font-size: 1rem; font-weight: 600;
+    background: #023D4F; color: white; border: none;
+    border-radius: 8px; cursor: pointer;
+  }
+  .gate button:hover { background: #035268; }
+  .gate button:disabled {
+    background: #d4d0c8; cursor: not-allowed;
+  }
+
+  /* Lesson body (hidden until email submitted) */
+  .lesson { display: none; }
+  .lesson.active { display: block; }
+
+  /* Player section */
+  .player-wrap {
+    background: #000; border-radius: 12px; overflow: hidden;
+    aspect-ratio: 16/9; position: relative; margin-bottom: 14px;
+  }
+  .player-wrap iframe {
+    width: 100%; height: 100%; border: 0; display: block;
+  }
+  #ytPlayer, #ytPlayerInner {
+    position: absolute; inset: 0; width: 100%; height: 100%; border: 0;
+  }
+  .player-overlay {
+    display: none; position: absolute; inset: 0;
+    background: rgba(2,61,79,0.97); padding: 28px;
+    flex-direction: column; justify-content: center; color: white;
+    overflow-y: auto;
+    z-index: 20; /* must sit ABOVE the click shield (z-index 5) so answers are clickable */
+  }
+  .player-overlay.active { display: flex; }
+
+  /* Progress bar */
+  .controls {
+    display: flex; gap: 10px; align-items: center;
+    margin-bottom: 8px;
+  }
+  .play-btn {
+    padding: 9px 18px; background: #023D4F; color: white;
+    border: none; border-radius: 8px; font-size: 0.92rem;
+    font-weight: 600; cursor: pointer; display: flex; align-items: center; gap: 6px;
+    transition: background 0.2s;
+  }
+  .play-btn:hover { background: #035268; }
+  .play-btn:disabled {
+    background: #b8b8b8; cursor: not-allowed;
+    opacity: 0.7;
+  }
+  .progress-track {
+    flex: 1; height: 8px; background: #e0e0e0; border-radius: 4px;
+    position: relative; overflow: hidden;
+  }
+  .progress-fill {
+    height: 100%; background: #046380; width: 0%;
+    transition: width 0.3s;
+  }
+  .checkpoint-mark {
+    position: absolute; top: -1px; height: 10px; width: 3px;
+    background: #FFD76B; pointer-events: none;
+  }
+  .progress-track.locked .progress-fill { background: #b8b8b8; }
+  .time-label {
+    font-size: 0.82rem; color: #5b5b5b;
+    font-variant-numeric: tabular-nums; min-width: 70px; text-align: right;
+  }
+  .lock-msg {
+    font-size: 0.8rem; color: #5b5b5b; text-align: center;
+    margin: 6px 0 18px; padding: 6px 12px;
+    background: #fff8e1; border-radius: 6px; display: inline-block;
+    border-left: 3px solid #FFD76B;
+  }
+
+  /* Question overlay */
+  .check-eyebrow {
+    font-size: 11px; letter-spacing: 0.16em; text-transform: uppercase;
+    color: #FFD76B; font-weight: 700; margin-bottom: 8px;
+  }
+  .q-text {
+    font-size: 1.15rem; font-weight: 600; margin: 0 0 18px;
+    line-height: 1.45;
+  }
+  .opts { display: flex; flex-direction: column; gap: 9px; }
+  .opt {
+    padding: 12px 16px; background: rgba(255,255,255,0.1);
+    border: 1px solid rgba(255,255,255,0.25);
+    border-radius: 8px; color: white; font-size: 0.95rem;
+    cursor: pointer; text-align: left; font-family: inherit;
+    transition: all 0.15s;
+  }
+  .opt:hover:not(:disabled) { background: rgba(255,255,255,0.18); }
+  .opt:disabled { cursor: not-allowed; }
+  .opt.correct {
+    background: rgba(29,158,117,0.45); border-color: #1D9E75;
+  }
+  .opt.incorrect {
+    background: rgba(226,75,75,0.4); border-color: #E24B4A;
+  }
+
+  .fib-row { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 10px; }
+  .fib-input {
+    flex: 1; min-width: 140px;
+    padding: 10px 13px; background: rgba(255,255,255,0.12);
+    border: 1px solid rgba(255,255,255,0.3); border-radius: 8px;
+    color: white; font-size: 0.95rem; font-family: inherit;
+  }
+  .fib-input::placeholder { color: rgba(255,255,255,0.5); }
+  .fib-input:focus { outline: none; border-color: #FFD76B; }
+
+  .order-list { display: flex; flex-direction: column; gap: 8px; }
+  .order-item {
+    padding: 11px 14px; background: rgba(255,255,255,0.12);
+    border: 1px solid rgba(255,255,255,0.3); border-radius: 8px;
+    color: white; cursor: grab; user-select: none;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .order-item.dragging { opacity: 0.4; }
+  .order-arrow {
+    background: rgba(255,255,255,0.12); border: 1px solid rgba(255,255,255,0.25);
+    color: #fff; border-radius: 5px; padding: 2px 7px; font-size: 0.72rem;
+    cursor: pointer; flex-shrink: 0; line-height: 1.5;
+  }
+  .order-arrow:hover { background: rgba(255,255,255,0.25); }
+  .order-grip { color: rgba(255,255,255,0.4); flex-shrink: 0; }
+
+  .tf-row { display: flex; gap: 12px; }
+  .tf-btn {
+    flex: 1; padding: 14px; background: rgba(255,255,255,0.1);
+    border: 1px solid rgba(255,255,255,0.25); border-radius: 8px;
+    color: white; font-size: 1rem; font-weight: 600; cursor: pointer;
+    font-family: inherit;
+  }
+
+  .match-wrap { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+  .match-col { display: flex; flex-direction: column; gap: 8px; }
+  .match-item {
+    padding: 10px 12px; background: rgba(255,255,255,0.12);
+    border: 1px solid rgba(255,255,255,0.3); border-radius: 8px;
+    color: white; cursor: pointer; font-size: 0.9rem;
+  }
+  .match-item.selected { background: #FFD76B; color: #1a1a1a; border-color: #FFD76B; }
+  .match-item.matched { opacity: 0.5; cursor: default; }
+
+  .submit-q {
+    margin-top: 14px; padding: 11px 22px; background: #FFD76B;
+    color: #023D4F; border: none; border-radius: 8px;
+    font-size: 0.95rem; font-weight: 700; cursor: pointer;
+    font-family: inherit; align-self: flex-start;
+  }
+  .submit-q:disabled {
+    background: rgba(255,255,255,0.2); color: rgba(255,255,255,0.5);
+    cursor: not-allowed;
+  }
+
+  .feedback {
+    margin-top: 14px; padding: 12px 14px; border-radius: 8px;
+    font-size: 0.9rem; line-height: 1.5; display: none;
+  }
+  .feedback.show { display: block; }
+  .feedback.ok {
+    background: rgba(29,158,117,0.2); color: #9FE1CB;
+  }
+  .feedback.bad {
+    background: rgba(226,75,75,0.2); color: #F7C1C1;
+  }
+  .continue-btn {
+    margin-top: 14px; padding: 11px 22px;
+    background: white; color: #023D4F; border: none; border-radius: 8px;
+    font-size: 0.95rem; font-weight: 600; cursor: pointer;
+    display: none; align-self: flex-start;
+    font-family: inherit;
+  }
+  .continue-btn.show { display: inline-block; }
+
+  /* Simulation */
+  .sim-block {
+    margin-top: 24px;
+    background: white; border-radius: 12px; overflow: hidden;
+    border: 1px solid #e8e4dc;
+  }
+  .sim-header {
+    background: #023D4F; color: white;
+    padding: 14px 18px; display: flex; align-items: center; gap: 10px;
+  }
+  .sim-header .icon { font-size: 1.3rem; }
+  .sim-header h3 { margin: 0; font-size: 1.05rem; font-weight: 600; }
+  .sim-frame {
+    aspect-ratio: 4/3; width: 100%;
+  }
+  .sim-frame iframe { width: 100%; height: 100%; border: 0; display: block; }
+  .sim-caption {
+    padding: 12px 18px; background: #fafaf7;
+    font-size: 0.88rem; color: #5b5b5b;
+  }
+
+  /* Score / finish */
+  .score-card {
+    display: none; background: white; border-radius: 12px;
+    padding: 28px 24px; margin-top: 20px; text-align: center;
+    border: 1px solid #e8e4dc;
+  }
+  .score-card.show { display: block; }
+  .score-card h2 {
+    font-family: "Libre Baskerville", Georgia, serif;
+    color: #023D4F; margin: 0 0 8px; font-size: 1.5rem;
+  }
+  .score-card .score {
+    font-size: 2.5rem; font-weight: 700; color: #046380; margin: 14px 0;
+  }
+  .score-card .status {
+    font-size: 0.9rem; color: #5b5b5b; margin: 0;
+  }
+
+  @media (max-width: 580px) {
+    .match-wrap { grid-template-columns: 1fr; }
+    .header h1 { font-size: 1.3rem; }
+    .q-text { font-size: 1rem; }
+    .controls { gap: 8px; }
+    .play-btn { padding: 9px 14px; }
+    .time-label { min-width: 86px; font-size: 0.78rem; }
+  }
+
+  /* Secondary controls row: back, speed dropdown, running score */
+  .controls-row2 {
+    display: flex; align-items: center; gap: 10px;
+    margin: 0 0 4px; flex-wrap: wrap;
+  }
+  .mini-btn {
+    padding: 7px 12px; background: #fff; color: #023D4F;
+    border: 1.5px solid #d4d0c8; border-radius: 8px;
+    font-size: 0.82rem; font-weight: 600; cursor: pointer;
+    font-family: inherit; min-height: 38px;
+  }
+  .mini-btn:hover { background: #f2efe9; }
+  .mini-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+  .speed-dd { position: relative; }
+  .speed-menu {
+    display: none; position: absolute; bottom: calc(100% + 6px); left: 0;
+    background: #fff; border: 1px solid #e0dcd3; border-radius: 10px;
+    box-shadow: 0 6px 20px rgba(0,0,0,0.14); padding: 6px;
+    z-index: 30; min-width: 150px;
+  }
+  .speed-menu.open { display: block; }
+  .speed-opt {
+    display: block; width: 100%; text-align: left;
+    padding: 9px 12px; background: transparent; border: none;
+    border-radius: 7px; font-size: 0.88rem; color: #1a1a1a;
+    cursor: pointer; font-family: inherit;
+  }
+  .speed-opt:hover { background: #f2efe9; }
+  .speed-opt.active { background: #046380; color: #fff; font-weight: 700; }
+  .score-pill {
+    margin-left: auto; padding: 6px 12px;
+    background: #eef6f3; color: #023D4F; border-radius: 999px;
+    font-size: 0.82rem; font-weight: 700; display: none;
+    border: 1px solid #cfe6dd;
+  }
+  .score-pill.show { display: inline-block; }
+  #volSlider {
+    width: 92px; accent-color: #046380; cursor: pointer; height: 4px;
+  }
+  /* Transcript */
+  .transcript-wrap { margin: 0 0 18px; display: none; }
+  .transcript-wrap.available { display: block; }
+  .transcript-toggle {
+    padding: 9px 14px; background: #fff; color: #023D4F;
+    border: 1.5px solid #d4d0c8; border-radius: 8px;
+    font-size: 0.85rem; font-weight: 600; cursor: pointer;
+    font-family: inherit; width: 100%; text-align: left; min-height: 42px;
+  }
+  .transcript-toggle:hover { background: #f2efe9; }
+  .transcript-panel {
+    display: none; margin-top: 8px; max-height: 260px; overflow-y: auto;
+    background: #fff; border: 1px solid #e8e4dc; border-radius: 10px;
+    padding: 14px 16px; font-size: 0.9rem; color: #333; line-height: 1.7;
+    white-space: pre-wrap;
+  }
+  .transcript-panel.open { display: block; }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="header">
+    <div class="eyebrow">Grade 7 · Mathematics</div>
+    <h1>Rounding Decimals and Significant Figures</h1>
+    <p class="sub">Watch, answer each checkpoint, and track your score.</p>
+  </div>
+
+  <!-- Email gate -->
+  <div class="gate" id="gate">
+    <h2>Before you start</h2>
+    <p>Your teacher will see your name and score when you finish this lesson.</p>
+    <label for="studentName">Your full name</label>
+    <input id="studentName" type="text" autocomplete="name" placeholder="e.g. Aarav Sharma">
+    <label for="studentEmail">Your email</label>
+    <input id="studentEmail" type="email" autocomplete="email" placeholder="e.g. aarav@school.in">
+    <button id="startBtn">Start the lesson</button>
+  </div>
+
+  <!-- Lesson body -->
+  <div class="lesson" id="lesson">
+
+    <!-- Player -->
+    <div class="player-wrap" id="playerWrap">
+      <iframe id="ytPlayer"
+        src="https://www.youtube.com/embed/A35XZqxSub8?enablejsapi=1&rel=0&modestbranding=1&playsinline=1&controls=0&disablekb=1&fs=0&iv_load_policy=3"
+        title="Rounding Decimals and Significant Figures"
+        allow="autoplay; accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture"></iframe>
+      <div id="clickShield" style="position:absolute; inset:0; z-index:5; cursor:pointer; background:transparent;"></div>
+      <div class="player-overlay" id="quizOverlay">
+        <div class="check-eyebrow">Checkpoint <span id="checkNum">1</span> of <span id="totalChecks">5</span> · Answer to continue</div>
+        <div class="q-text" id="qText"></div>
+        <div id="qBody"></div>
+        <div class="feedback" id="feedback"></div>
+        <button class="continue-btn" id="continueBtn">Continue watching →</button>
+      </div>
+    </div>
+
+    <div class="controls">
+      <button class="play-btn" id="playBtn">
+        <span id="playIcon">▶</span> <span id="playLabel">Play</span>
+      </button>
+      <div class="progress-track" id="progressTrack">
+        <div class="progress-fill" id="progressFill"></div>
+        <div id="checkpointMarks"></div>
+      </div>
+      <div class="time-label" id="timeLabel">0:00 / 0:00</div>
+    </div>
+
+    <div class="controls-row2">
+      <div class="speed-dd">
+        <button class="mini-btn" id="speedToggle">Speed: 1x ▾</button>
+        <div class="speed-menu" id="speedMenu">
+          <button class="speed-opt" data-rate="0.75">0.75x</button>
+          <button class="speed-opt active" data-rate="1">Normal (1x)</button>
+          <button class="speed-opt" data-rate="1.25">1.25x</button>
+          <button class="speed-opt" data-rate="1.5">1.5x</button>
+        </div>
+      </div>
+      <button class="mini-btn" id="muteBtn" title="Mute or unmute">🔊 Sound</button>
+      <input type="range" id="volSlider" min="0" max="100" value="100" title="Volume" aria-label="Volume">
+      <button class="mini-btn" id="ccBtn" title="Show or hide captions on the video">CC</button>
+      <span class="score-pill" id="scorePill">Score so far: 0 / 0</span>
+    </div>
+
+    <div style="text-align: center; margin: 4px 0 18px;">
+      <span class="lock-msg">🔒 The video pauses at each checkpoint. Answer to unlock the next segment.</span>
+    </div>
+
+    <!-- PhET simulation block -->
+    
+
+    <!-- Final score card -->
+    <div class="score-card" id="scoreCard">
+      <h2>Lesson complete</h2>
+      <div class="score" id="finalScore">0 / 0</div>
+      <p class="status" id="finalStatus">Sending your result to your teacher...</p>
+    </div>
+
+  </div>
+
+</div>
+
+<!-- YouTube IFrame API -->
+<script src="https://www.youtube.com/iframe_api"></script>
+
+<script>
+// =========================================================
+// LESSON DATA, generated by the skill, edited rarely
+// =========================================================
+const LESSON = {
+  videoId: "A35XZqxSub8",
+  videoDurationSec: 480,
+  webhookUrl: "https://script.google.com/macros/s/AKfycbz5eu-WZ9Ansjh-zRO0NXGbmygcxZjnAQRXv3HkbSL4plpF69hfiOsNP6X_2VGwuY6W4w/exec",
+  lessonId: "rounding-decimals-sigfigs-grade7",
+  checkpoints: [{"atSec": 60, "type": "mcq", "question": "To round 12.74 to the nearest whole number, which digit do you look at?", "options": ["The tenths digit (7)", "The hundredths digit (4)", "The ones digit (2)", "The tens digit (1)"], "correct": 0, "explain": "To round to the nearest whole number, look at the tenths digit. If it is 5 or more, round up; if it is 4 or less, keep the whole number the same."}, {"atSec": 150, "type": "fill", "question": "Round 15.374 to two decimal places. Answer: _____", "blanks": ["15.37"], "explain": "The digit after the second decimal place is 4, which is less than 5, so we round down and keep 15.37."}, {"atSec": 255, "type": "truefalse", "question": "When rounding to decimal places, you count digits from the decimal point.", "correct": true, "explain": "Decimal places are counted starting right after the decimal point, unlike significant figures which count from the first non-zero digit."}, {"atSec": 330, "type": "mcq", "question": "In the number 0.00407, which digit is the first significant figure?", "options": ["4", "0 (the first zero)", "7", "0.00"], "correct": 0, "explain": "Leading zeros are never significant. The first significant figure is the first non-zero digit, which is 4."}, {"atSec": 405, "type": "fill", "question": "Round 3.4562 to 2 significant figures. Answer: _____", "blanks": ["3.5"], "explain": "The first two significant figures are 3 and 4. The next digit is 5, so we round the 4 up to 5, giving 3.5."}]
+};
+
+let state = {
+  player: null,
+  playing: false,
+  studentName: "",
+  studentEmail: "",
+  score: 0,
+  totalQuestions: LESSON.checkpoints.length,
+  answered: new Array(LESSON.checkpoints.length).fill(false),
+  answersLog: new Array(LESSON.checkpoints.length).fill(null),
+  submitted: false,
+  inQuiz: false,
+  currentCheckpoint: -1,
+  lastTime: 0,
+  pollId: null,
+  furthestUnlocked: 0,
+  furthestReached: 0,
+  done: false
+};
+
+// YouTube IFrame ready. We attach to the static iframe above. This is the exact
+// configuration that played reliably before; the video loads from its own src, so
+// playback does not depend on the JS API handshake completing first.
+function onYouTubeIframeAPIReady() {
+  state.player = new YT.Player('ytPlayer', {
+    events: {
+      onReady: onPlayerReady,
+      onStateChange: onPlayerStateChange,
+      onError: onPlayerError
+    }
+  });
+}
+
+function onPlayerError(e) {
+  // 101 / 150: embedding disabled by the video owner. 100: video removed or private.
+  const msg = (e.data === 101 || e.data === 150)
+    ? 'This video does not allow playing inside other pages. Please tell your teacher, and they can rebuild this lesson with a different video in one line.'
+    : 'This video could not be loaded. Please tell your teacher so they can rebuild the lesson with another video.';
+  const overlay = document.getElementById('quizOverlay');
+  overlay.classList.add('active');
+  document.getElementById('qText').textContent = 'Video unavailable';
+  document.getElementById('qBody').innerHTML = '<p style="color:rgba(255,255,255,0.92); font-size:0.95rem; line-height:1.55;">' + msg + '</p>';
+  document.getElementById('playBtn').disabled = true;
+}
+
+// Click shield: taps on the video go through our Play control, never YouTube's UI.
+// It is switched off whenever a question is showing, so answer buttons receive taps.
+const clickShield = document.getElementById('clickShield');
+clickShield.onclick = () => {
+  if (state.inQuiz || state.done) return;
+  togglePlay();
+};
+
+// Playback speed via a YouTube-style dropdown (saves space on mobile so the
+// timeline stays visible). Watching faster or slower is allowed; skipping is not.
+const speedToggle = document.getElementById('speedToggle');
+const speedMenu = document.getElementById('speedMenu');
+speedToggle.onclick = (e) => {
+  e.stopPropagation();
+  speedMenu.classList.toggle('open');
+};
+document.querySelectorAll('.speed-opt').forEach(b => {
+  b.onclick = () => {
+    if (!state.player) return;
+    const rate = parseFloat(b.dataset.rate);
+    state.player.setPlaybackRate(rate);
+    document.querySelectorAll('.speed-opt').forEach(x => x.classList.remove('active'));
+    b.classList.add('active');
+    speedToggle.textContent = 'Speed: ' + (rate === 1 ? '1x' : rate + 'x') + ' ▾';
+    speedMenu.classList.remove('open');
+  };
+});
+// Close the speed menu when tapping anywhere else
+document.addEventListener('click', (e) => {
+  if (!speedMenu.contains(e.target) && e.target !== speedToggle) {
+    speedMenu.classList.remove('open');
+  }
+});
+
+// Mute / unmute
+const muteBtn = document.getElementById('muteBtn');
+muteBtn.onclick = () => {
+  if (!state.player) return;
+  if (state.player.isMuted()) {
+    state.player.unMute();
+    muteBtn.textContent = '🔊 Sound';
+  } else {
+    state.player.mute();
+    muteBtn.textContent = '🔇 Muted';
+  }
+};
+
+// Volume slider. On iPhone and iPad, Apple does not allow software volume control,
+// so the slider may have no effect there; the side buttons set volume. Mute works everywhere.
+document.getElementById('volSlider').oninput = (e) => {
+  if (!state.player) return;
+  const v = parseInt(e.target.value, 10);
+  state.player.setVolume(v);
+  if (v === 0) { state.player.mute(); muteBtn.textContent = '🔇 Muted'; }
+  else if (state.player.isMuted()) { state.player.unMute(); muteBtn.textContent = '🔊 Sound'; }
+};
+
+// Captions toggle. Works only if the video has a caption track (the creator's own
+// captions or YouTube's auto-captions). If none exist, it tells the student plainly.
+let ccOn = false;
+document.getElementById('ccBtn').onclick = () => {
+  if (!state.player) return;
+  const btn = document.getElementById('ccBtn');
+  if (!ccOn) {
+    try {
+      state.player.loadModule('captions');
+      state.player.loadModule('cc');
+      try { state.player.setOption('captions', 'track', { languageCode: 'en' }); } catch (e) {}
+    } catch (e) {}
+    setTimeout(() => {
+      let tracks = [];
+      try { tracks = state.player.getOption('captions', 'tracklist') || []; } catch (e) {}
+      if (!tracks || tracks.length === 0) {
+        try { state.player.unloadModule('captions'); state.player.unloadModule('cc'); } catch (e) {}
+        toast('This video has no captions available.');
+        return;
+      }
+      ccOn = true;
+      btn.style.background = '#046380'; btn.style.color = '#fff';
+    }, 600);
+  } else {
+    try { state.player.unloadModule('captions'); state.player.unloadModule('cc'); } catch (e) {}
+    ccOn = false;
+    btn.style.background = '#fff'; btn.style.color = '#023D4F';
+  }
+};
+
+// Small non-blocking message used for the captions notice
+function toast(msg) {
+  let el = document.getElementById('miniToast');
+  if (!el) {
+    el = document.createElement('div');
+    el.id = 'miniToast';
+    el.style.cssText = 'margin:8px 0; padding:10px 14px; background:#fff8e1; border-left:3px solid #FFD76B; border-radius:8px; font-size:0.85rem; color:#5b5b5b;';
+    document.querySelector('.controls-row2').insertAdjacentElement('afterend', el);
+  }
+  el.textContent = msg;
+  el.style.display = 'block';
+  clearTimeout(el._t);
+  el._t = setTimeout(() => { el.style.display = 'none'; }, 5000);
+}
+
+// Tab switch: pause the video so the lesson and the checkpoints never drift apart
+document.addEventListener('visibilitychange', () => {
+  if (document.hidden && state.player && state.playing && !state.done) {
+    state.player.pauseVideo();
+  }
+});
+
+function onPlayerReady() {
+  // Nothing to do until the student starts the lesson.
+}
+
+function onPlayerStateChange(e) {
+  if (e.data === YT.PlayerState.PLAYING) {
+    state.playing = true;
+    document.getElementById('playIcon').textContent = '⏸';
+    document.getElementById('playLabel').textContent = 'Pause';
+    startPolling();
+  } else if (e.data === YT.PlayerState.PAUSED || e.data === YT.PlayerState.ENDED) {
+    state.playing = false;
+    document.getElementById('playIcon').textContent = '▶';
+    document.getElementById('playLabel').textContent = 'Play';
+    stopPolling();
+    if (e.data === YT.PlayerState.ENDED && !state.done) {
+      // Guard: YouTube fires ENDED when the tab loses focus on some browsers, even
+      // though the video has not finished. Only call finish() when the student has
+      // genuinely watched to within 3 seconds of the real end AND answered every
+      // question. If either is false, this is a false ENDED from a window switch,
+      // and we simply let the student resume by pressing Play.
+      const allAnswered = state.answered.every(Boolean);
+      const pos = state.player.getCurrentTime ? state.player.getCurrentTime() : 0;
+      const nearEnd = pos >= (LESSON.videoDurationSec - 3);
+      if (allAnswered && nearEnd) {
+        finish();
+      }
+      // Otherwise ignore the false ENDED: the play button is visible and the student
+      // can press it to continue exactly where they left off.
+    }
+  }
+}
+
+// Email gate
+document.getElementById('startBtn').onclick = () => {
+  const name = document.getElementById('studentName').value.trim();
+  const email = document.getElementById('studentEmail').value.trim();
+  if (!name || !email || !email.includes('@')) {
+    alert('Please enter your full name and a valid email.');
+    return;
+  }
+  state.studentName = name;
+  state.studentEmail = email;
+  document.getElementById('gate').style.display = 'none';
+  document.getElementById('lesson').classList.add('active');
+  setupCheckpointMarks();
+  updateTimeLabel();
+};
+
+function setupCheckpointMarks() {
+  const wrap = document.getElementById('checkpointMarks');
+  wrap.innerHTML = '';
+  LESSON.checkpoints.forEach((cp, i) => {
+    const pct = (cp.atSec / LESSON.videoDurationSec) * 100;
+    const mark = document.createElement('div');
+    mark.className = 'checkpoint-mark';
+    mark.style.left = pct + '%';
+    wrap.appendChild(mark);
+  });
+}
+
+// Play / pause control
+document.getElementById('playBtn').onclick = () => { togglePlay(); };
+
+function togglePlay() {
+  if (!state.player || state.inQuiz || state.done) return;
+  if (state.playing) {
+    state.player.pauseVideo();
+  } else {
+    state.player.playVideo();
+  }
+}
+
+// Polling: track time, fire checkpoints. Going back is allowed; there is no
+// forward-seek path for the student (native controls off, keyboard off, click
+// shield on, and both the bar and Back button only move backward), so no
+// snap-back guard is needed. Natural playback always reaches each checkpoint.
+function startPolling() {
+  stopPolling();
+  state.pollId = setInterval(() => {
+    if (!state.player || !state.playing) return;
+    const t = state.player.getCurrentTime();
+    state.lastTime = t;
+    if (t > state.furthestReached) state.furthestReached = t;
+    updateProgress(t);
+    updateTimeLabel();
+
+    // Pause at the first unanswered checkpoint we reach
+    LESSON.checkpoints.forEach((cp, i) => {
+      if (!state.answered[i] && t >= cp.atSec && !state.inQuiz) {
+        triggerCheckpoint(i);
+      }
+    });
+  }, 250);
+}
+
+function stopPolling() {
+  if (state.pollId) clearInterval(state.pollId);
+  state.pollId = null;
+}
+
+function updateProgress(t) {
+  const pct = Math.min(100, (t / LESSON.videoDurationSec) * 100);
+  document.getElementById('progressFill').style.width = pct + '%';
+}
+
+function updateTimeLabel() {
+  const t = state.lastTime || 0;
+  document.getElementById('timeLabel').textContent =
+    fmt(t) + ' / ' + fmt(LESSON.videoDurationSec);
+}
+
+function fmt(s) {
+  s = Math.floor(s);
+  const m = Math.floor(s / 60);
+  const sec = (s % 60).toString().padStart(2, '0');
+  return m + ':' + sec;
+}
+
+// Checkpoint trigger
+function triggerCheckpoint(idx) {
+  if (state.inQuiz || state.answered[idx]) return;
+  state.inQuiz = true;
+  state.currentCheckpoint = idx;
+  state.player.pauseVideo();
+  document.getElementById('playBtn').disabled = true;
+  document.getElementById('progressTrack').classList.add('locked');
+  document.getElementById('clickShield').style.pointerEvents = 'none'; // let answers receive taps
+  showQuiz(idx);
+}
+
+function showQuiz(idx) {
+  const cp = LESSON.checkpoints[idx];
+  document.getElementById('checkNum').textContent = idx + 1;
+  document.getElementById('qText').textContent = cp.question;
+  const body = document.getElementById('qBody');
+  body.innerHTML = '';
+  document.getElementById('feedback').classList.remove('show', 'ok', 'bad');
+  document.getElementById('continueBtn').classList.remove('show');
+
+  if (cp.type === 'mcq') renderMCQ(cp, body);
+  else if (cp.type === 'fill') renderFill(cp, body);
+  else if (cp.type === 'order') renderOrder(cp, body);
+  else if (cp.type === 'label') renderLabel(cp, body);
+  else if (cp.type === 'truefalse') renderTrueFalse(cp, body);
+  else if (cp.type === 'match') renderMatch(cp, body);
+
+  document.getElementById('quizOverlay').classList.add('active');
+}
+
+// Question type renderers
+function renderMCQ(cp, body) {
+  const opts = document.createElement('div');
+  opts.className = 'opts';
+  cp.options.forEach((o, i) => {
+    const btn = document.createElement('button');
+    btn.className = 'opt';
+    btn.textContent = o;
+    btn.onclick = () => answerMCQ(cp, i, btn);
+    opts.appendChild(btn);
+  });
+  body.appendChild(opts);
+}
+
+function answerMCQ(cp, choice, btn) {
+  const all = document.querySelectorAll('.opt');
+  all.forEach(b => b.disabled = true);
+  const correct = choice === cp.correct;
+  if (correct) {
+    btn.classList.add('correct');
+    incrementScore();
+  } else {
+    btn.classList.add('incorrect');
+    all[cp.correct].classList.add('correct');
+  }
+  showFeedback(correct, cp.explain, cp.options ? cp.options[choice] : '');
+}
+
+// How many blanks to actually show: driven by the underscores in the question text,
+// never more than we have answers for. This stops a phantom "Blank 2" when the
+// question sentence has only one blank but the data carries extra answer entries.
+function fillCount(cp) {
+  const markers = (String(cp.question).match(/_{2,}/g) || []).length;
+  return Math.max(1, Math.min(markers || cp.blanks.length, cp.blanks.length));
+}
+
+function renderFill(cp, body) {
+  const row = document.createElement('div');
+  row.className = 'fib-row';
+  const n = fillCount(cp);
+  for (let i = 0; i < n; i++) {
+    const inp = document.createElement('input');
+    inp.className = 'fib-input';
+    inp.id = 'fib-' + i;
+    inp.placeholder = n > 1 ? ('Blank ' + (i + 1)) : 'Type your answer';
+    inp.autocomplete = 'off';
+    row.appendChild(inp);
+  }
+  body.appendChild(row);
+  const btn = document.createElement('button');
+  btn.className = 'submit-q';
+  btn.textContent = 'Check answers';
+  btn.onclick = () => answerFill(cp, btn);
+  body.appendChild(btn);
+}
+
+function answerFill(cp, btn) {
+  btn.disabled = true;
+  let allRight = true;
+  const n = fillCount(cp);
+  const typedParts = [];
+  for (let i = 0; i < n; i++) {
+    const el = document.getElementById('fib-' + i);
+    const v = el.value.trim().toLowerCase();
+    el.disabled = true;
+    typedParts.push(el.value.trim());
+    const target = cp.blanks[i];
+    if (Array.isArray(target)) {
+      if (!target.map(s => String(s).toLowerCase()).includes(v)) allRight = false;
+    } else if (target != null) {
+      if (v !== String(target).toLowerCase()) allRight = false;
+    }
+  }
+  if (allRight) incrementScore();
+  showFeedback(allRight, cp.explain, typedParts.join(', '));
+}
+
+function renderOrder(cp, body) {
+  const list = document.createElement('div');
+  list.className = 'order-list';
+  const shuffled = [...cp.items].sort(() => Math.random() - 0.5);
+  shuffled.forEach(item => {
+    const div = document.createElement('div');
+    div.className = 'order-item';
+    div.draggable = true;
+    div.dataset.id = item.id;
+    // tap buttons for mobile (up/down arrows)
+    const up = document.createElement('button');
+    up.className = 'order-arrow'; up.textContent = '▲'; up.title = 'Move up';
+    up.onclick = () => { if (div.previousSibling) list.insertBefore(div, div.previousSibling); };
+    const dn = document.createElement('button');
+    dn.className = 'order-arrow'; dn.textContent = '▼'; dn.title = 'Move down';
+    dn.onclick = () => { if (div.nextSibling) list.insertBefore(div.nextSibling, div); };
+    const grip = document.createElement('span');
+    grip.textContent = '⠿'; grip.className = 'order-grip';
+    const label = document.createElement('span');
+    label.textContent = item.text;
+    div.appendChild(up); div.appendChild(dn); div.appendChild(grip); div.appendChild(label);
+    list.appendChild(div);
+  });
+  body.appendChild(list);
+  enableDragSort(list);
+  const hint = document.createElement('p');
+  hint.style.cssText = 'font-size:0.78rem;color:rgba(255,255,255,0.6);margin:4px 0 10px;';
+  hint.textContent = 'Drag to reorder, or use the ▲ ▼ buttons on mobile.';
+  body.appendChild(hint);
+  const btn = document.createElement('button');
+  btn.className = 'submit-q';
+  btn.textContent = 'Check order';
+  btn.onclick = () => answerOrder(cp, btn, list);
+  body.appendChild(btn);
+}
+
+function enableDragSort(container) {
+  let drag = null;
+  // Desktop drag-and-drop
+  container.querySelectorAll('.order-item').forEach(item => {
+    item.addEventListener('dragstart', () => { drag = item; item.classList.add('dragging'); });
+    item.addEventListener('dragend', () => item.classList.remove('dragging'));
+    item.addEventListener('dragover', e => e.preventDefault());
+    item.addEventListener('drop', e => {
+      e.preventDefault();
+      if (!drag || drag === item) return;
+      const rect = item.getBoundingClientRect();
+      const after = (e.clientY - rect.top) > rect.height / 2;
+      item.parentNode.insertBefore(drag, after ? item.nextSibling : item);
+    });
+  });
+  // Touch drag-and-drop for phones and tablets
+  let touchDrag = null, touchClone = null;
+  container.querySelectorAll('.order-item').forEach(item => {
+    item.addEventListener('touchstart', e => {
+      if (e.target.classList.contains('order-arrow')) return; // let tap buttons work
+      touchDrag = item;
+      item.classList.add('dragging');
+      touchClone = item.cloneNode(true);
+      touchClone.style.cssText = 'position:fixed;opacity:0.7;pointer-events:none;z-index:999;width:'+item.offsetWidth+'px;background:#023D4F;border-radius:8px;';
+      document.body.appendChild(touchClone);
+    }, {passive: true});
+    item.addEventListener('touchmove', e => {
+      if (!touchDrag || !touchClone) return;
+      const t = e.touches[0];
+      touchClone.style.left = (t.clientX - touchClone.offsetWidth / 2) + 'px';
+      touchClone.style.top  = (t.clientY - 20) + 'px';
+      const els = document.elementsFromPoint(t.clientX, t.clientY);
+      const over = els.find(el => el.classList.contains('order-item') && el !== touchDrag);
+      if (over) {
+        const rect = over.getBoundingClientRect();
+        const after = (t.clientY - rect.top) > rect.height / 2;
+        over.parentNode.insertBefore(touchDrag, after ? over.nextSibling : over);
+      }
+    }, {passive: true});
+    item.addEventListener('touchend', () => {
+      if (touchDrag) touchDrag.classList.remove('dragging');
+      if (touchClone) { touchClone.remove(); touchClone = null; }
+      touchDrag = null;
+    });
+  });
+}
+
+function answerOrder(cp, btn, list) {
+  btn.disabled = true;
+  list.querySelectorAll('.order-item').forEach(i => {
+    i.draggable = false; i.style.cursor = 'default';
+  });
+  const ids = Array.from(list.querySelectorAll('.order-item')).map(i => i.dataset.id);
+  const correct = ids.every((id, i) => id === cp.correct[i]);
+  if (correct) incrementScore();
+  showFeedback(correct, cp.explain);
+}
+
+function renderTrueFalse(cp, body) {
+  const row = document.createElement('div');
+  row.className = 'tf-row';
+  ['True', 'False'].forEach((label, i) => {
+    const btn = document.createElement('button');
+    btn.className = 'tf-btn';
+    btn.textContent = label;
+    btn.onclick = () => answerTF(cp, i === 0, btn);
+    row.appendChild(btn);
+  });
+  body.appendChild(row);
+}
+
+function answerTF(cp, choice, btn) {
+  const all = document.querySelectorAll('.tf-btn');
+  all.forEach(b => b.disabled = true);
+  const correct = choice === cp.correct;
+  if (correct) {
+    btn.classList.add('correct');
+    incrementScore();
+  } else {
+    btn.classList.add('incorrect');
+    all[cp.correct ? 0 : 1].classList.add('correct');
+  }
+  showFeedback(correct, cp.explain, choice ? 'True' : 'False');
+}
+
+function renderMatch(cp, body) {
+  const wrap = document.createElement('div');
+  wrap.className = 'match-wrap';
+  const left = document.createElement('div'); left.className = 'match-col';
+  const right = document.createElement('div'); right.className = 'match-col';
+  const matchState = { selectedLeft: null, pairs: {} };
+
+  cp.pairs.forEach((p, i) => {
+    const l = document.createElement('div');
+    l.className = 'match-item';
+    l.dataset.id = i;
+    l.textContent = p.left;
+    l.onclick = () => {
+      if (l.classList.contains('matched')) return;
+      left.querySelectorAll('.match-item').forEach(el => el.classList.remove('selected'));
+      l.classList.add('selected');
+      matchState.selectedLeft = i;
+    };
+    left.appendChild(l);
+  });
+
+  const shuffledRight = cp.pairs.map((p, i) => ({ text: p.right, originalIdx: i }))
+    .sort(() => Math.random() - 0.5);
+  shuffledRight.forEach(r => {
+    const el = document.createElement('div');
+    el.className = 'match-item';
+    el.dataset.target = r.originalIdx;
+    el.textContent = r.text;
+    el.onclick = () => {
+      if (el.classList.contains('matched') || matchState.selectedLeft === null) return;
+      matchState.pairs[matchState.selectedLeft] = r.originalIdx;
+      el.classList.add('matched');
+      const leftEl = left.querySelector('[data-id="' + matchState.selectedLeft + '"]');
+      leftEl.classList.remove('selected');
+      leftEl.classList.add('matched');
+      matchState.selectedLeft = null;
+      if (Object.keys(matchState.pairs).length === cp.pairs.length) {
+        // All matched, enable check
+        btn.disabled = false;
+      }
+    };
+    right.appendChild(el);
+  });
+
+  wrap.appendChild(left); wrap.appendChild(right);
+  body.appendChild(wrap);
+  const btn = document.createElement('button');
+  btn.className = 'submit-q';
+  btn.textContent = 'Check matches';
+  btn.disabled = true;
+  btn.onclick = () => answerMatch(cp, btn, matchState);
+  body.appendChild(btn);
+}
+
+function answerMatch(cp, btn, matchState) {
+  btn.disabled = true;
+  let allRight = true;
+  Object.keys(matchState.pairs).forEach(leftIdx => {
+    if (parseInt(leftIdx) !== matchState.pairs[leftIdx]) allRight = false;
+  });
+  if (allRight) incrementScore();
+  showFeedback(allRight, cp.explain);
+}
+
+function renderLabel(cp, body) {
+  // Simple version: list-based placement
+  // (Visual diagram-based label is in the full skill examples)
+  const note = document.createElement('p');
+  note.textContent = 'Match each label to its position:';
+  note.style.cssText = 'font-size:0.9rem;color:rgba(255,255,255,0.8);margin:0 0 10px';
+  body.appendChild(note);
+  renderMatch(cp, body);
+}
+
+// Score, feedback, continue
+function incrementScore() {
+  if (state.answered[state.currentCheckpoint]) return;
+  state.score++;
+  state.answered[state.currentCheckpoint] = true;
+}
+
+function showFeedback(correct, explain, chosen) {
+  state.answered[state.currentCheckpoint] = true;
+  // Log this answer for the teacher's Sheet
+  const cp = LESSON.checkpoints[state.currentCheckpoint];
+  const qShort = (cp.question || '').replace(/\s+/g, ' ').slice(0, 70);
+  state.answersLog[state.currentCheckpoint] =
+    'Q' + (state.currentCheckpoint + 1) + ' [' + qShort + ']: ' +
+    (correct ? 'Correct' : 'Wrong') + (chosen ? ' (chose: ' + String(chosen).slice(0, 40) + ')' : '');
+
+  // Running score: visible after every answer, not only at the end
+  const attempted = state.answered.filter(Boolean).length;
+  const pill = document.getElementById('scorePill');
+  pill.textContent = 'Score so far: ' + state.score + ' / ' + attempted;
+  pill.classList.add('show');
+
+  const fb = document.getElementById('feedback');
+  fb.className = 'feedback show ' + (correct ? 'ok' : 'bad');
+  fb.innerHTML = '<strong>' + (correct ? 'Correct.' : 'Not quite.') + '</strong> ' + explain +
+    '<br><span style="opacity:0.85; font-size:0.85rem;">Your score so far: ' +
+    state.score + ' out of ' + attempted + ' answered.</span>';
+  document.getElementById('continueBtn').classList.add('show');
+}
+
+document.getElementById('continueBtn').onclick = () => {
+  document.getElementById('quizOverlay').classList.remove('active');
+  document.getElementById('clickShield').style.pointerEvents = 'auto';
+  state.inQuiz = false;
+  document.getElementById('playBtn').disabled = false;
+  state.furthestUnlocked = LESSON.checkpoints[state.currentCheckpoint].atSec + 1;
+  const allDone = state.answered.every(a => a);
+  if (allDone) {
+    // All questions answered: submit and show the score card immediately.
+    // The video keeps playing in the background; the student can minimise or
+    // close it whenever they like. No separate "Finish" button needed.
+    document.getElementById('progressTrack').classList.remove('locked');
+    submitResult();
+    finish();
+  } else {
+    state.player.playVideo();
+  }
+};
+
+// Sending the result: sendBeacon first (survives tab closes), fetch as fallback.
+// Sent once, the moment the last question is answered.
+function submitResult() {
+  if (state.submitted) return;
+  if (!LESSON.webhookUrl) return;
+  state.submitted = true;
+  const payload = JSON.stringify({
+    lessonId: LESSON.lessonId,
+    name: state.studentName,
+    email: state.studentEmail,
+    score: state.score,
+    total: state.totalQuestions,
+    answers: state.answersLog.filter(Boolean).join(' | '),
+    completedAt: new Date().toISOString()
+  });
+  let sent = false;
+  try {
+    if (navigator.sendBeacon) {
+      sent = navigator.sendBeacon(LESSON.webhookUrl, new Blob([payload], { type: 'text/plain;charset=utf-8' }));
+    }
+  } catch (e) { sent = false; }
+  if (!sent) {
+    try {
+      fetch(LESSON.webhookUrl, {
+        method: 'POST', mode: 'no-cors',
+        headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+        body: payload
+      }).catch(() => { state.submitted = false; });
+    } catch (e) { state.submitted = false; }
+  }
+}
+
+// Show the score card. Video continues playing so students can watch the rest.
+function finish() {
+  if (state.done) return;
+  state.done = true;
+  stopPolling();
+  // Keep the video playing; student may want to continue watching.
+  document.getElementById('playBtn').disabled = true;
+  document.getElementById('scoreCard').classList.add('show');
+  document.getElementById('finalScore').textContent =
+    state.score + ' / ' + state.totalQuestions;
+  submitResult(); // safety net in case continueBtn path did not fire it
+  if (LESSON.webhookUrl) {
+    document.getElementById('finalStatus').textContent = state.submitted
+      ? 'Result sent to your teacher ✓'
+      : "Could not reach your teacher's sheet. Screenshot this score and send it to your teacher.";
+  } else {
+    document.getElementById('finalStatus').textContent =
+      'Lesson complete. Screenshot this score for your teacher.';
+  }
+  document.getElementById('scoreCard').scrollIntoView({ behavior: 'smooth' });
+}
+</script>
+
+</body>
+</html>
